@@ -200,6 +200,56 @@ function authentifier_user($nom_utilisateur, $mot_de_passe) {
     }
 }
 
+function totalArticles() {
+    $connect = connect();
+
+    $sql = "SELECT COUNT(id) as total FROM articles";
+
+    $result = $connect->query($sql);
+
+    // Fetch the result as an associative array
+    $total_articles = $result->fetch_assoc();
+
+    // Close the database connection
+    $connect->close();
+
+    // Return the total count of articles
+    return $total_articles['total'];
+}
+function totalCategories() {
+    $connect = connect();
+
+    $sql = "SELECT COUNT(id_categorie) as total FROM categories";
+
+    $result = $connect->query($sql);
+
+    // Fetch the result as an associative array
+    $total_categories = $result->fetch_assoc();
+
+    // Close the database connection
+    $connect->close();
+
+    // Return the total count of articles
+    return $total_categories['total'];
+}
+function totalAuteurs() {
+    $connect = connect();
+
+    $sql = "SELECT COUNT(id_user) as total FROM users";
+
+    $result = $connect->query($sql);
+
+    // Fetch the result as an associative array
+    $total_auteurs = $result->fetch_assoc();
+
+    // Close the database connection
+    $connect->close();
+
+    // Return the total count of articles
+    return $total_auteurs['total'];
+}
+
+
 
 
 

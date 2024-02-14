@@ -40,6 +40,9 @@
                     <a class="nav-link" href="categories.php">Categories</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="categories.php">Utilisateurs</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-danger" href="./const/deconnexion.php">Deconnecter</a>
                 </li>
             </ul>

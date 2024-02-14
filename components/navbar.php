@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary fixed-top">
         <div class="container-fluid">
             <!-- Brand -->
             <a href="index.php" class="text-black navbar-brand">PFSH</a>
