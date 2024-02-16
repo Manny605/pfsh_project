@@ -1,13 +1,18 @@
 <?php
+// Démarrer la session
+session_start();
 
+// Inclure le fichier contenant les fonctions de base de données
 include '../const/functions.php';
 
+// Vérifier si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     $username = $_POST['nom_utilisateur'];
     $password = $_POST['mot_de_passe'];
 
+    // Authentifier l'utilisateur
     if (authentifier_user($username, $password)) {
+        // Rediriger l'utilisateur vers la page d'accueil ou toute autre page appropriée après une connexion réussie
         header("Location: ../pages/admin/index.php");
         exit();
     } else {
@@ -15,8 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
-
 
 
 <!DOCTYPE html>
@@ -89,8 +92,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>

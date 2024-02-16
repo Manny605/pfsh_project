@@ -1,5 +1,9 @@
 <?php
 
+session_start();
+
+// var_dump($_SESSION);
+
 include '../../const/functions.php';
 
 $total_articles = totalArticles();
@@ -14,7 +18,7 @@ $total_auteurs = totalAuteurs();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin : Tableau de bord</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap-extended.min.css">
@@ -50,13 +54,13 @@ $total_auteurs = totalAuteurs();
                     <a class="nav-link" href="index.php">Tableau de bord</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="articles.php">Articles</a>
+                    <a class="nav-link" href="articles/articles.php">Articles</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="categories.php">Categories</a>
+                    <a class="nav-link" href="categories/categories.php">Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="categories.php">Utilisateurs</a>
+                    <a class="nav-link" href="utilisateurs/utilisateurs.php">Utilisateurs</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-danger" href="./const/deconnexion.php">Deconnecter</a>
@@ -72,6 +76,7 @@ $total_auteurs = totalAuteurs();
                 <div class="grey-bg container-fluid">
                 
                 <section id="stats-subtitle">
+
                     <div class="row">
                         <div class="col-12 mt-3 mb-1">
                             <h4 class="text-uppercase">Articles</h4>
@@ -98,7 +103,7 @@ $total_auteurs = totalAuteurs();
                             </div>
                         </div>
                     </div>
-
+                    
                 </section>
 
                 <section id="stats-subtitle">
@@ -116,7 +121,7 @@ $total_auteurs = totalAuteurs();
                                     <div class="card-body">
                                         <div class="media d-flex">
                                             <div class="align-self-center">
-                                                <i class="icon-book-open primary font-large-2 float-left"></i>
+                                                <i class="icon-folder primary font-large-2 float-left"></i>
                                             </div>
                                             <div class="media-body text-right">
                                                 <h3><?php echo $total_categories; ?></h3>
@@ -145,7 +150,7 @@ $total_auteurs = totalAuteurs();
                                     <div class="card-body">
                                         <div class="media d-flex">
                                             <div class="align-self-center">
-                                                <i class="icon-book-open primary font-large-2 float-left"></i>
+                                                <i class="icon-user primary font-large-2 float-left"></i>
                                             </div>
                                             <div class="media-body text-right">
                                                 <h3><?php echo $total_auteurs; ?></h3>

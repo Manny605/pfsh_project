@@ -182,6 +182,20 @@ function getAllArticles() {
     return $allArticles;
 }
 
+function getAllUsers() {
+    $connect = connect();
+
+    $sql = "SELECT * FROM users";
+
+    $result = $connect->query($sql);
+
+    $users = $result->fetch_all(MYSQLI_ASSOC);
+
+    $connect->close();
+
+    return $users;
+}
+
 function authentifier_user($nom_utilisateur, $mot_de_passe) {
     $connect = connect();
     
@@ -194,6 +208,9 @@ function authentifier_user($nom_utilisateur, $mot_de_passe) {
     
     if($resultat->num_rows == 1) {
         $row = $resultat->fetch_assoc();
+        $_SESSION['id_user'] = $row['id_user'];
+        $_SESSION['nom_utilisateur'] = $row['nom_utilisateur'];
+        $_SESSION['mot_de_passe'] = $row['mot_de_passe'];
         return true;
     } else {
         return false;
@@ -216,6 +233,7 @@ function totalArticles() {
     // Return the total count of articles
     return $total_articles['total'];
 }
+
 function totalCategories() {
     $connect = connect();
 
@@ -232,6 +250,7 @@ function totalCategories() {
     // Return the total count of articles
     return $total_categories['total'];
 }
+
 function totalAuteurs() {
     $connect = connect();
 
@@ -249,9 +268,64 @@ function totalAuteurs() {
     return $total_auteurs['total'];
 }
 
+function insertArticle($titre, $categorie_id, $user_id,$contenu, $image) {
+    $connect = connect();
 
+    // Préparez la requête SQL pour insérer un nouvel article
+    $sql = "INSERT INTO articles (titre, categorie_id, user_id,contenu, image) VALUES (?, ?, ?, ?, ?)";
 
+    // Préparez la déclaration SQL
+    $stmt = $connect->prepare($sql);
 
+    // Liaison des paramètres
+    $stmt->bind_param("siiss", $titre, $categorie_id, $user_id,$contenu, $image);
 
+    // Exécutez la déclaration
+    $stmt->execute();
+
+    // Fermez la déclaration et la connexion
+    $stmt->close();
+    $connect->close();
+}
+
+function insertCategorie($nom_categorie) {
+    $connect = connect();
+
+    // Préparez la requête SQL pour insérer un nouvel article
+    $sql = "INSERT INTO categories (nom_categorie) VALUES (?)";
+
+    // Préparez la déclaration SQL
+    $stmt = $connect->prepare($sql);
+
+    // Liaison des paramètres
+    $stmt->bind_param("s", $nom_categorie);
+
+    // Exécutez la déclaration
+    $stmt->execute();
+
+    // Fermez la déclaration et la connexion
+    $stmt->close();
+    $connect->close();
+}
+
+function insertUser( $prenom,$nom,$nom_utilisateur,$mot_de_passe ) {
+    $connect = connect();
+
+    // Préparez la requête SQL pour insérer un nouvel article/
+    $sql = "INSERT INTO users (prenom, nom, nom_utilisateur, mot_de_passe) VALUES (?, ?, ?, ?)";
+
+    // Préparez la déclaration SQL
+    $stmt = $connect->prepare($sql);
+
+    // Liaison des paramètres
+    $stmt->bind_param("ssss", $prenom,$nom,$nom_utilisateur,$mot_de_passe);
+
+    // Exécutez la déclaration
+    $stmt->execute();
+
+    // Fermez la déclaration et la connexion
+    $stmt->close();
+    $connect->close();
+}
 
 ?>
