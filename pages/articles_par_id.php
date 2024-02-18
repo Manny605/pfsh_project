@@ -6,14 +6,15 @@ $categories = getAllCategories();
 if(isset($_GET['id']) && isset($_GET['categorie_id'])) {
 
     $article_id = $_GET['id'];
-    $article = getArticleById($article_id);
+    $articleQ = getArticleById($article_id);
 
     $categorie_id = $_GET['categorie_id'];
     $articles_categorie = getArticlesByCategorie($categorie_id);
     
-    if($article) {
-        $titre = $article['titre'];
+    if($articleQ) {
+        $titre = $articleQ['titre'];
         $categorie_nom = isset($articles_categorie[0]['nom_categorie']) ? $articles_categorie[0]['nom_categorie'] : "";
+    }
 ?>
 
 <!doctype html>
@@ -50,6 +51,11 @@ if(isset($_GET['id']) && isset($_GET['categorie_id'])) {
             background-color: #f0f0f0; /* Couleur de fond de la barre latérale */
             padding: 20px;
         }
+        @media (max-width: 992px) {
+            .navbar-custom-young {
+                flex-direction: row !important;
+            }
+        }
     </style>
 </head>
 
@@ -63,45 +69,80 @@ if(isset($_GET['id']) && isset($_GET['categorie_id'])) {
         <div class="container-fluid mt-5">
             <div class="row">
 
-            <div class="col-md-3">
-                <div class="sidebar vh-100">
-                    <h3>Derniers articles <?php echo $categorie_nom ?></h3>
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <?php
-                        // Vérifier si $articles_categorie est défini avant de l'utiliser
-                        if(isset($articles_categorie) && is_array($articles_categorie)) {
-                            foreach ($articles_categorie as $articles_categorie) {
-                                $titre = $articles_categorie['titre'];
-                                // Vérifier si la longueur du titre dépasse 40 caractères
-                                if (strlen($titre) > 40) {
-                                    // Si c'est le cas, tronquer le titre et ajouter des points de suspension
-                                    $titre = substr($titre, 0, 40) . '...';
-                                }
-                                echo "<li><a href='articles_par_id.php?id=" . $articles_categorie['id'] . "&categorie_id=" . $categorie_id . "' class='dropdown-item'>" . $titre . "</a></li>";
-                            }
-                        }
-                        ?>
-                    </ul>
-                </div>
-            </div>
-
-
-                <div class="col-md-9">
-                    <h2 class="mb-4">Articles <?php echo $categorie_nom ?></h2>
-                    
-                    <div class="card">
-                        <div class="card-body">
-                            <h2 class="card-title py-4"><?php echo $article['titre'] ?></h2>
-                            <hr>
-                            <p class="card-text py-5"><?php echo $article['contenu'] ?></p>
-                            <hr>
-                            <div class="d-flex justify-content-between">
-                                <p>Date de publication : <?php echo $article['date_publication'] ?></p>
-                                <p>Auteur : <?php echo $article['nom_auteur'] ?></p>
-                            </div>
+                <div class="container">
+                    <div class="row justify-content-md-center">
+                        <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
+                            <h2 class="mb-4 display-5 text-center">Les Articles <?php echo $categorie_nom; ?></h2>
+                            <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle">
                         </div>
                     </div>
+                </div>
 
+
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <?php 
+                        foreach ($articles_categorie as $key => $article) { ?>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="<?php echo $key; ?>" <?php if ($key === 0) echo 'class="active"'; ?> aria-current="true" aria-label="Slide <?php echo $key; ?>"></button>
+                        <?php } ?>
+                    </div>
+                    <div class="carousel-inner">
+                        <?php 
+                        foreach ($articles_categorie as $key => $article) { ?>
+                            <div class="carousel-item <?php if ($key === 0) echo 'active'; ?>">
+                                <a href="articles_par_id.php?id=<?php echo $article['id']; ?>&categorie_id=<?php echo $article['categorie_id']; ?>">
+                                    <img src="./admin/articles/<?php echo $article['image']; ?>" class="d-block w-100 img-fluid" alt="...">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5><?php echo $article['titre']; ?></h5>
+                                    </div>
+                                </a>
+                            </div>
+                        <?php } ?>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+
+                <div class="container mt-5">
+                    <div class="row justify-content-md-center">
+                        <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
+                            <h2 class="mb-4 display-5 text-center">Article</h2>
+                            <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="" class="gallery-link">
+                                <img src="./admin/articles/<?php echo $articleQ['image']; ?>" alt="" class="img-responsive push-bit img-thumbnail" style="max-width: 100%; height: auto;" />
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="clearfix">
+                                <div class="pull-right">
+                                    <h2 class="text-uppercase"><strong><?php echo $articleQ['titre']; ?></strong></h2>
+                                </div>
+                                <h4>
+                                    <strong class="text-success"><?php echo $articleQ['date_publication']; ?></strong><br />
+                                    <small><?php echo isset($articleQ['nom_auteur']) ? $articleQ['nom_auteur'] : "Auteur inconnu"; ?></small>
+                                </h4>
+                            </div>
+                            <hr />
+                            <p>
+                                <?php echo $articleQ['contenu']; ?>
+                            </p>
+                            <hr />
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -117,10 +158,10 @@ if(isset($_GET['id']) && isset($_GET['categorie_id'])) {
 <?php
     } else {
         // Si aucun article n'est trouvé pour cet ID
-        echo "Aucun article trouvé pour cet ID.";
+        echo "";
     }
-} else {
+{
     // Si l'ID de l'article n'est pas spécifié dans l'URL
-    echo "ID d'article non spécifié.";
+    echo "";
 }
 ?>

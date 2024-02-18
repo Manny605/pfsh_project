@@ -1,6 +1,12 @@
 <?php
 session_start();
-// Inclusion du fichier de configuration et des fonctions
+
+if (!isset($_SESSION['id_user'])) {
+    // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    header("Location: ../../index.php");
+    exit();
+}
+
 include_once "../../../const/functions.php";
 
 // Vérification de l'existence de l'ID d'article dans l'URL
@@ -49,9 +55,11 @@ $categories = getAllCategories();
                 <li class="nav-item">
                     <a class="nav-link" href="../categories/categories.php">Categories</a>
                 </li>
+                <?php if ($_SESSION['role'] !== 'auteur'): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="../utilisateurs/utilisateurs.php">Utilisateurs</a>
                 </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a class="nav-link text-danger" href="../const/deconnexion.php">Deconnecter</a>
                 </li>

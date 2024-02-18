@@ -2,7 +2,10 @@
 
 session_start();
 
-// var_dump($_SESSION['id_user']);
+if (!isset($_SESSION['id_user'])) {
+    header("Location: ../../index.php");
+    exit();
+}
 
 $id_user = $_SESSION['id_user'];
 
@@ -17,7 +20,7 @@ $categories = getAllCategories();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin : Nouveau Article</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -49,9 +52,11 @@ $categories = getAllCategories();
                 <li class="nav-item">
                     <a class="nav-link" href="../categories/categories.php">Categories</a>
                 </li>
+                <?php if ($_SESSION['role'] !== 'auteur'): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="../utilisateurs/utilisateurs.php">Utilisateurs</a>
                 </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a class="nav-link text-danger" href="../const/deconnexion.php">Deconnecter</a>
                 </li>
@@ -71,7 +76,6 @@ $categories = getAllCategories();
                     <div class="form-group">
                         <label for="categorie_id">Catégorie :</label>
                         <select class="form-control" id="categorie_id" name="categorie_id" required>
-                            <!-- Vous pouvez charger les catégories depuis la base de données ici -->
                             <option value="">Sélectionnez une catégorie</option>
                             <?php foreach ($categories as $category): ?>
                                 <option value="<?php echo $category['id_categorie']; ?>"><?php echo $category['nom_categorie']; ?></option>
@@ -83,7 +87,7 @@ $categories = getAllCategories();
 
                     <div class="form-group">
                         <label for="contenu">Contenu :</label>
-                        <textarea class="form-control" id="contenu" name="contenu" rows="15" required></textarea>
+                        <textarea class="form-control" id="contenu" name="contenu" rows="12" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="image">Image :</label>

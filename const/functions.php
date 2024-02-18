@@ -164,14 +164,68 @@ function getMostRecentArticleInCategory($categorie_id) {
     }
 }
 
-function getAllArticles() {
+function DerniersArticlesLimit() {
     $connect = connect();
 
     $sql = "SELECT articles.*, CONCAT(users.prenom, ' ', users.nom) AS nom_auteur, categories.nom_categorie AS nom_categorie
             FROM articles
             JOIN users ON articles.user_id = users.id_user
             JOIN categories ON articles.categorie_id = categories.id_categorie
-            ORDER BY articles.date_publication DESC";
+            ORDER BY articles.date_publication DESC LIMIT 3 offset 1";
+
+    $result = $connect->query($sql);
+
+    $allArticles = $result->fetch_all(MYSQLI_ASSOC);
+
+    $connect->close();
+
+    return $allArticles;
+}
+
+function getAllArticlesLimit($startFrom, $articlesPerPage) {
+    $connect = connect();
+
+    // Préparation de la requête SQL pour récupérer une portion des articles
+    $sql = "SELECT articles.*, CONCAT(users.prenom, ' ', users.nom) AS nom_auteur, categories.nom_categorie AS nom_categorie
+    FROM articles
+    JOIN users ON articles.user_id = users.id_user
+    JOIN categories ON articles.categorie_id = categories.id_categorie
+    ORDER BY articles.date_publication DESC Limit ?, ?";
+    $stmt = $connect->prepare($sql);
+    $stmt->bind_param("ii", $startFrom, $articlesPerPage);
+    
+    // Exécution de la requête
+    $stmt->execute();
+    
+    // Obtention du résultat
+    $result = $stmt->get_result();
+    
+    // Création d'un tableau pour stocker les articles récupérés
+    $articles = array();
+    
+    // Vérification si des résultats ont été trouvés
+    if ($result->num_rows > 0) {
+        // Parcourir chaque ligne de résultat
+        while ($row = $result->fetch_assoc()) {
+            // Ajouter l'article à la liste des articles
+            $articles[] = $row;
+        }
+    }
+    
+    // Fermeture de la connexion et retour de la liste des articles
+    $stmt->close();
+    $connect->close();
+    return $articles;
+}
+
+function getAllArticles() {
+    $connect = connect();
+
+    $sql = "SELECT articles.*, CONCAT(users.prenom, ' ', users.nom) AS nom_auteur, categories.nom_categorie AS nom_categorie
+    FROM articles
+    JOIN users ON articles.user_id = users.id_user
+    JOIN categories ON articles.categorie_id = categories.id_categorie
+    ORDER BY articles.date_publication DESC";
 
     $result = $connect->query($sql);
 
@@ -211,6 +265,7 @@ function authentifier_user($nom_utilisateur, $mot_de_passe) {
         $_SESSION['id_user'] = $row['id_user'];
         $_SESSION['nom_utilisateur'] = $row['nom_utilisateur'];
         $_SESSION['mot_de_passe'] = $row['mot_de_passe'];
+        $_SESSION['role'] = $row['role'];
         return true;
     } else {
         return false;
@@ -232,6 +287,28 @@ function totalArticles() {
 
     // Return the total count of articles
     return $total_articles['total'];
+}
+
+function getTotalArticlesCount() {
+   $connect = connect();
+
+    $sql = "SELECT COUNT(*) AS total FROM articles";
+    $stmt = $connect->prepare($sql);
+    
+    // Exécution de la requête
+    $stmt->execute();
+    
+    // Obtention du résultat
+    $result = $stmt->get_result();
+    
+    // Récupération du nombre total d'articles à partir du résultat
+    $row = $result->fetch_assoc();
+    $total = $row['total'];
+    
+    // Fermeture de la connexion et retour du nombre total d'articles
+    $stmt->close();
+    $connect->close();
+    return $total;
 }
 
 function totalCategories() {
@@ -278,7 +355,7 @@ function insertArticle($titre, $categorie_id, $user_id,$contenu, $image) {
     $stmt = $connect->prepare($sql);
 
     // Liaison des paramètres
-    $stmt->bind_param("siiss", $titre, $categorie_id, $user_id,$contenu, $image);
+    $stmt->bind_param("siiss", $titre, $categorie_id, $user_id, $contenu, $image);
 
     // Exécutez la déclaration
     $stmt->execute();

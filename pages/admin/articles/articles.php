@@ -1,7 +1,13 @@
 <?php
 
 session_start();
-// var_dump($_SESSION);
+
+if (!isset($_SESSION['id_user'])) {
+    // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    header("Location: ../../index.php");
+    exit();
+}
+
 include '../../../const/functions.php';
 
 $articles = getAllArticles();
@@ -54,9 +60,11 @@ $articles = getAllArticles();
                 <li class="nav-item">
                     <a class="nav-link" href="../categories/categories.php">Categories</a>
                 </li>
+                <?php if ($_SESSION['role'] !== 'auteur'): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="../utilisateurs/utilisateurs.php">Utilisateurs</a>
                 </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a class="nav-link text-danger" href="../const/deconnexion.php">Deconnecter</a>
                 </li>

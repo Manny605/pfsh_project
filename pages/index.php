@@ -2,7 +2,7 @@
 require_once "../const/functions.php";
 
 $categories = getAllCategories();
-$AllArticles = getAllArticles(); 
+$AllArticles = DerniersArticlesLimit(); 
 
 // Récupérer l'article le plus récent
 $latestArticle = $AllArticles[0];
@@ -44,6 +44,15 @@ $categorie_nom = isset($categories[$categorie_id]['nom_categorie']) ? $categorie
             max-height: 250px;
             overflow: hidden;
         }
+        @media (max-width: 992px) {
+            .navbar-custom-young {
+                flex-direction: row !important;
+            }
+        }
+
+        .push-bit {
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 
@@ -59,32 +68,25 @@ $categorie_nom = isset($categories[$categorie_id]['nom_categorie']) ? $categorie
 
             <section class="bg-light py-4 my-5">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <h2 class="mb-3 text-danger">A la une</h2>
-                        </div>
-
-                        <?php 
-                        foreach ($AllArticles as $article) {
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                        <?php foreach ($AllArticles as $article) : ?>
+                            <?php
                             // Limiter la longueur du titre
                             $trimmedTitle = strlen($article['titre']) > 75 ? substr($article['titre'], 0, 75) . '...' : $article['titre'];
-                        ?>
-                        <div class="col-md-6 col-lg-4">
-                            <div class="card my-3">
-                                <div class="card-thumbnail">
-                                    <img src="<?php echo $article['image']; ?>" class="img-fluid" alt="thumbnail">
-                                </div>
-                                <div class="card-body">
-                                    <h3 class="card-title" title="<?php echo $article['titre']?>"><a href="#" class="text-secondary"><?php echo $trimmedTitle; ?></a></h3>
-                                    <p class="card-text"><?php echo $article['date_publication']; ?></p>
-                                    <div>
-                                        <a href="#" class="btn btn-danger">Lire</a>
-                                        
+                            ?>
+                            <div class="col">
+                                <div class="card h-100">
+                                    <a href="article_id.php?id=<?php echo $article['id']; ?>"><img src="./admin/articles/<?php echo $article['image']; ?>" class="card-img-top" alt="thumbnail"></a>
+                                    <div class="card-body">
+                                        <h3 class="card-title" title="<?php echo $article['titre']?>"><a href="article_id.php?id=<?php echo $article['id']; ?>" class="text-secondary"><?php echo $trimmedTitle; ?></a></h3>
+                                        <p class="card-text"><?php echo $article['date_publication']; ?></p>
+                                        <div>
+                                            <a href="article_id.php?id=<?php echo $article['id']; ?>" class="btn btn-danger">Lire</a>
+                                        </div>
                                     </div>
-                                  </div>
+                                </div>
                             </div>
-                        </div>
-                        <?php } ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </section>
@@ -92,28 +94,42 @@ $categorie_nom = isset($categories[$categorie_id]['nom_categorie']) ? $categorie
                 <div class="container">
                     <div class="row justify-content-md-center">
                         <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
-                            <h2 class="mb-4 display-5 text-center">Tous les articles</h2>
-                            <p class="text-secondary mb-5 text-center lead fs-4">Stay tuned and updated by the latest updates from our blog.</p>
+                            <h2 class="mb-4 display-5 text-center">Dernier Article</h2>
+                            <p class="text-secondary mb-5 text-center lead fs-4">Restez à l'écoute et informé des dernières mises à jour.</p>
                             <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle">
                         </div>
                     </div>
                 </div>
 
-                <div class="container bg-light p-4 rounded">
-                    <h2 class="mb-4">Dernier Article</h2>
-                    <div class="card">
-                        <img src="<?php echo $latestArticle['image'] ?>" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h2 class="card-title"><?php echo $latestArticle['titre'] ?></h2>
-                            <hr>
-                            <p class="card-text"><?php echo $latestArticle['contenu'] ?></p>
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="#" class="gallery-link">
+                                <img src="./admin/articles/<?php echo $latestArticle['image']; ?>" alt="" class="img-responsive push-bit img-thumbnail" style="max-width: 100%; height: auto;" />
+                            </a>
                         </div>
-                        <div class="card-footer d-flex justify-content-between align-items-center">
-                            <p class="m-0">Date de publication : <?php echo $latestArticle['date_publication'] ?></p>
-                            <p class="m-0">Auteur : <?php echo isset($latestArticle['nom_auteur']) ? $latestArticle['nom_auteur'] : "Auteur inconnu"; ?></p>
+                        <div class="col-md-6">
+                            <div class="clearfix">
+                                <div class="pull-right">
+                                    <h2 class="text-uppercase"><strong><?php echo $latestArticle['titre']; ?></strong></h2>
+                                </div>
+                                <h4>
+                                    <strong class="text-success"><?php echo $latestArticle['date_publication']; ?></strong><br />
+                                    <small><?php echo isset($latestArticle['nom_auteur']) ? $latestArticle['nom_auteur'] : "Auteur inconnu"; ?></small>
+                                </h4>
+                            </div>
+                            <hr />
+                            <p>
+                                <?php echo $latestArticle['contenu']; ?>
+                            </p>
+                            <hr />
                         </div>
                     </div>
                 </div>
+
+
+
 
 
             </div>
@@ -123,5 +139,12 @@ $categorie_nom = isset($categories[$categorie_id]['nom_categorie']) ? $categorie
     <!-- Utilisation des scripts Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        function changeLanguage() {
+            var language = jQuery('#language').val();
+            window.location.href = 'http://localhost/PFSH/pages/?language='+language;
+        }
+    </script>
 </body>
 </html>

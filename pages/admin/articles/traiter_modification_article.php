@@ -10,8 +10,13 @@ if(isset($_POST['id'], $_POST['titre'], $_POST['contenu'], $_POST['categorie_id'
     
     // Vérification de l'existence et de la validité de la variable $_FILES['image']
     if(isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        // Traitez ici le téléchargement de l'image
-        $image = $_FILES['image']['name']; // Ceci est un exemple, veuillez traiter l'upload correctement
+        // Définir le chemin où vous souhaitez enregistrer l'image
+        $upload_directory = 'images/'; // Chemin relatif
+
+        $image = $upload_directory . $_FILES['image']['name'];
+        
+        // Déplacer l'image téléchargée vers le répertoire de destination
+        move_uploaded_file($_FILES['image']['tmp_name'], $image);
     } else {
         $image = ''; // Si aucune image n'a été téléchargée ou si une erreur s'est produite
     }
@@ -36,3 +41,4 @@ if(isset($_POST['id'], $_POST['titre'], $_POST['contenu'], $_POST['categorie_id'
     // header("Location: articles.php?id=$id&error_modif=error2");
 }
 ?>
+

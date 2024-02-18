@@ -1,53 +1,41 @@
 <?php
-
 session_start();
+$id_user = $_SESSION['user_id'];
+// Inclure le fichier de fonctions
+include_once '../../../const/functions.php';
 
-// Vérifie si l'utilisateur est connecté
-if (!isset($_SESSION['id_user'])) {
-    // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
-    header("Location: ../../../auth/login.php");
-    exit();
-}
-
-// Inclure le fichier de fonctions contenant la fonction d'insertion
-include '../../../const/functions.php';
-
-// Vérifie si le formulaire a été soumis
+// Vérifier si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Vérifie si toutes les données requises sont présentes
-    if (isset($_POST["titre"]) && isset($_POST["categorie_id"]) && isset($_POST["id_user"]) && isset($_POST["contenu"])) {
-        // Récupère les données du formulaire
-        $titre = $_POST["titre"];
-        $categorie_id = $_POST["categorie_id"];
-        $id_user = $_POST["id_user"];
-        $contenu = $_POST["contenu"];
+    // Récupérer les valeurs du formulaire
+    $titre = $_POST['titre'];
+    $categorie_id = $_POST['categorie_id'];
+    $id_user = $_POST['id_user'];
+    $contenu = $_POST['contenu'];
+    
+    // Vérifier si une image a été téléchargée
+    if(isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        // Récupérer le nom temporaire de l'image
+        $image_tmp = $_FILES['image']['tmp_name'];
         
-        // Vérifie si une image a été téléchargée
-        if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
-            $image = $_FILES["image"]["name"];
-            $image_tmp = $_FILES["image"]["tmp_name"];
-
-            // Déplace l'image téléchargée vers le répertoire souhaité
-            move_uploaded_file($image_tmp, "../../../images/" . $image);
-        } else {
-            $image = null; // Ou assignez un chemin par défaut pour une image par défaut
-        }
+        // Définir l'emplacement de sauvegarde de l'image
+        $image_destination = 'images/' . $_FILES['image']['name'];
         
-        // Insérer l'article dans la base de données en utilisant la fonction insertArticle
-        insertArticle($titre, $categorie_id, $id_user, $contenu, $image);
-        
-        // Redirigez l'utilisateur vers une page de confirmation ou une autre page appropriée
-        header("Location: articles.php?success_ajout=ok");
-        exit();
+        // Déplacer l'image téléchargée vers le répertoire de destination
+        move_uploaded_file($image_tmp, $image_destination);
     } else {
-        // Rediriger vers une page d'erreur si des données sont manquantes
-        header("Location: articles.php?error_ajout=error1");
-        exit();
+        // Si aucune image n'a été téléchargée, définir l'emplacement de l'image comme vide
+        $image_destination = '';
     }
+    
+    // Appeler la fonction insertArticle pour insérer l'article dans la base de données
+    insertArticle($titre, $categorie_id, $id_user, $contenu, $image_destination);
+    
+    // Rediriger l'utilisateur vers une page de succès ou d'accueil
+    header("Location: articles.php?success_ajout=ok");
+    exit();
 } else {
-    // Rediriger vers une page d'erreur si la requête n'est pas de type POST
-    header("Location: articles.php?error_ajout=error2");
+    // Rediriger l'utilisateur vers une page d'erreur ou d'accueil si le formulaire n'est pas soumis
+    header("Location: articles.php?error_ajout=error");
     exit();
 }
-
 ?>

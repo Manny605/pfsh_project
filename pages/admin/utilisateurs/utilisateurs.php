@@ -1,7 +1,12 @@
 <?php
 
 session_start();
-// var_dump($_SESSION);
+if (!isset($_SESSION['id_user'])) {
+    // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    header("Location: ../../index.php");
+    exit();
+}
+
 include '../../../const/functions.php';
 
 $users = getAllUsers();
@@ -54,9 +59,11 @@ $users = getAllUsers();
                 <li class="nav-item">
                     <a class="nav-link" href="../categories/categories.php">Categories</a>
                 </li>
+                <?php if ($_SESSION['role'] !== 'auteur'): ?>
                 <li class="nav-item active">
                     <a class="nav-link" href="utilisateurs.php">Utilisateurs</a>
                 </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a class="nav-link text-danger" href="../const/deconnexion.php">Deconnecter</a>
                 </li>
@@ -130,7 +137,7 @@ $users = getAllUsers();
                                 <td class="mobile-only"><?php echo $increment; ?></td>
                                 <td><?php echo $user['prenom'] . ' ' . $user['nom']; ?></td>
                                 <td class="mobile-only"><?php echo $user['nom_utilisateur']; ?></td>
-                                <td class="mobile-only">********</td>
+                                <td class="mobile-only"><?php echo $user['mot_de_passe']; ?></td>
                                 <td class="row">
                                     <a href="" data-toggle="modal" data-target="#editModal<?php echo $user['id_user']; ?>"><i class="px-4 fas fa-edit text-success"></i></a>
                                     <a href="" data-toggle="modal" data-target="#deleteModal<?php echo $user['id_user']; ?>"><i class="fas fa-trash text-danger"></i></a>

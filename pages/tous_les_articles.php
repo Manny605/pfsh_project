@@ -2,16 +2,26 @@
 
 require_once "../const/functions.php";
 
-$categories = getAllCategories();
+// Nombre d'articles par page
+$articlesPerPage = 9;
 
-$AllArticles = getAllArticles();
+// Page par défaut
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+// Récupérer les articles pour la page spécifiée
+$startFrom = ($page - 1) * $articlesPerPage;
+$AllArticles = getAllArticlesLimit($startFrom, $articlesPerPage);
+
+// Récupérer le nombre total d'articles
+$totalArticles = getTotalArticlesCount();
+$totalPages = ceil($totalArticles / $articlesPerPage);
 
 ?>
 
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Title</title>
+        <title>Tous les articles</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta
@@ -57,6 +67,11 @@ $AllArticles = getAllArticles();
             .card-horizontal .card-body {
                 padding: 1.25rem;
             }
+            @media (max-width: 992px) {
+            .navbar-custom-young {
+                flex-direction: row !important;
+            }
+        }
         </style>
 
     </head>
@@ -66,7 +81,7 @@ $AllArticles = getAllArticles();
             <?php include '../components/navbar.php' ?>
         </header>
         <!-- Main Content -->
-        <div class="container mt-4">
+        <div class="container mt-5">
 
             <section class="py-3 py-md-5 py-xl-8">
             
@@ -84,11 +99,11 @@ $AllArticles = getAllArticles();
                     <div class="row gy-3 gy-lg-0 gx-xxl-5">
                         <?php if (!empty($AllArticles)) : ?>
                         <?php foreach ($AllArticles as $article) : ?> <!-- corrected variable name from $articles to $article -->
-                            <div class="col-12 col-lg-4">
+                            <div class="col-12 col-lg-4 mt-3">
                             <article>
                                 <figure class="rounded overflow-hidden mb-3 bsb-overlay-hover">
                                 <a href='article_id.php?id=<?php echo $article['id']; ?>'>
-                                    <img class="img-fluid bsb-scale bsb-hover-scale-up" loading="lazy" src="<?php echo $article['image']; ?>" alt="">
+                                    <img class="img-fluid bsb-scale bsb-hover-scale-up" loading="lazy" src="./admin/articles/<?php echo $article['image']; ?>" alt="">
                                 </a>
                                 <figcaption>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-eye text-white bsb-hover-fadeInLeft" viewBox="0 0 16 16">
@@ -138,6 +153,29 @@ $AllArticles = getAllArticles();
                         <?php endif; ?>
                     </div>
                 </div>
+
+ <!-- Pagination -->
+ <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center mt-5">
+            <?php if ($page > 1) : ?>
+                <li class="page-item">
+                    <a class="page-link" href="?page=<?php echo $page - 1; ?>" tabindex="-1" aria-disabled="true">Précédent</a>
+                </li>
+            <?php endif; ?>
+            
+            <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                </li>
+            <?php endfor; ?>
+
+            <?php if ($page < $totalPages) : ?>
+                <li class="page-item">
+                    <a class="page-link" href="?page=<?php echo $page + 1; ?>">Suivant</a>
+                </li>
+            <?php endif; ?>
+        </ul>
+    </nav>
 
             </section>
 
