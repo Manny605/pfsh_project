@@ -5,7 +5,7 @@ $categories = getAllCategories();
 $AllArticles = DerniersArticlesLimit(); 
 
 // Récupérer l'article le plus récent
-$latestArticle = $AllArticles[0];
+$latestArticle = getRecentArticle();
 
 // Récupérer les clés de la catégorie et de l'article le plus récent
 $categorie_id = $latestArticle['categorie_id'];

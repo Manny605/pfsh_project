@@ -11,14 +11,12 @@ if(isset($_GET['categorie_id'])) {
     // Récupérer les articles de cette catégorie
     $articles_categorie = getArticlesByCategorie($categorie_id);
     
-    // Récupérer le dernier article publié de cette catégorie
-    $recentArticle = getMostRecentArticleInCategory($categorie_id);
-
-    // Vérifier si des articles ont été trouvés
+    // Vérifier si des articles ont été trouvés pour cette catégorie
     if($articles_categorie) {
         // Récupérer le nom de la catégorie si des articles sont trouvés
         $categorie_nom = isset($articles_categorie[0]['nom_categorie']) ? $articles_categorie[0]['nom_categorie'] : "";
-    }
+        // Récupérer le dernier article publié de cette catégorie
+        $recentArticle = getMostRecentArticleInCategory($categorie_id);
 ?>
 <!doctype html>
 <html lang="en">
@@ -153,11 +151,14 @@ if(isset($_GET['categorie_id'])) {
 </html>
 <?php
     } else {
-        // Si aucun article n'est trouvé pour cette catégorie
-        echo "";
+        header('location: 404Error.php');
+?>
+
+<?php
     }
-{
-    // Si l'ID de catégorie n'est pas spécifié dans l'URL
-    echo "";
+} else {
+    header('location: 404Error.php');
+?>
+<?php
 }
 ?>

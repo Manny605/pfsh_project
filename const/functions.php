@@ -120,6 +120,35 @@ function getArticleById($id_article) {
     }
 }
 
+function getRecentArticle() {
+    $connect = connect(); // Supposons que cette fonction 'connect()' établit une connexion à la base de données
+
+    $sql = "SELECT articles.*, CONCAT(users.prenom,' ',users.nom) AS nom_auteur, categories.nom_categorie
+            FROM articles
+            JOIN users ON articles.user_id = users.id_user
+            JOIN categories ON categories.id_categorie = articles.categorie_id
+            ORDER BY articles.date_publication DESC
+            LIMIT 1";
+
+    $stmt = $connect->prepare($sql);
+
+    // Exécute la requête
+    $stmt->execute();
+
+    // Récupère le résultat
+    $result = $stmt->get_result();
+
+    // Vérifie si des résultats ont été trouvés
+    if ($result->num_rows > 0) {
+        // Récupère la première ligne de résultat (dans ce cas, le seul résultat car LIMIT 1 est utilisé)
+        $recentArticle = $result->fetch_assoc();
+        return $recentArticle;
+    } else {
+        // Aucun article trouvé
+        return null;
+    }
+}
+
 function getMostRecentArticleInCategory($categorie_id) {
     $connect = connect();
 
@@ -404,5 +433,29 @@ function insertUser( $prenom,$nom,$nom_utilisateur,$mot_de_passe ) {
     $stmt->close();
     $connect->close();
 }
+
+function rechercheArticle($txtSearch) {
+    $connect = connect();
+
+    $sql = "SELECT articles.*, CONCAT(users.prenom, ' ', users.nom) AS nom_auteur, categories.nom_categorie AS nom_categorie
+    FROM articles
+    JOIN users ON articles.user_id = users.id_user
+    JOIN categories ON articles.categorie_id = categories.id_categorie
+    WHERE articles.titre LIKE '%$txtSearch%'
+    ORDER BY articles.date_publication DESC";
+
+    // Exemple d'exécution de la requête
+    $resultat = mysqli_query($connect, $sql);
+
+    // Si vous souhaitez retourner les résultats, vous pouvez les stocker dans un tableau
+    $articlesTrouves = array();
+    while ($row = mysqli_fetch_assoc($resultat)) {
+        $articlesTrouves[] = $row;
+    }
+
+    // Retourner les articles trouvés
+    return $articlesTrouves;
+}
+
 
 ?>
