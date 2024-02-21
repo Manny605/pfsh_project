@@ -127,13 +127,13 @@ if(isset($_GET['categorie_id'])) {
                                 </div>
                                 <div class="my-4"></div>
                                 <h4>
-                                    <strong class="text-danger"><?php echo $recentArticle['date_publication']; ?></strong><br />
-                                    <small><?php echo isset($recentArticle['nom_auteur']) ? $recentArticle['nom_auteur'] : "Auteur inconnu"; ?> : المؤلف</small>
+                                    <strong class="text-danger text-end"><?php echo $recentArticle['date_publication']; ?></strong><br />
+                                    <small class="text-end"><?php echo isset($recentArticle['nom_auteur']) ? $recentArticle['nom_auteur'] : "Auteur inconnu"; ?> : المؤلف</small>
                                 </h4>
                             </div>
                             <hr />
-                            <p>
-                                <?php echo $recentArticle['contenu']; ?>
+                            <p class="text-end">
+                                <?php echo nl2br($recentArticle['contenu']); ?>
                             </p>
                             <hr />
                         </div>

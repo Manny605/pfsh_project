@@ -14,7 +14,7 @@ if(isset($_GET['id'])) {
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
     <title><?php echo $titre ?></title>
     <meta charset="utf-8" />

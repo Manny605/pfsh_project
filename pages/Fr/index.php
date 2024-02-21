@@ -1,8 +1,6 @@
 <?php
 require_once "../../const/functions.php";
 
-$lang = isset($_GET['lang']) ? $_GET['lang'] : 'fr';
-
 $categories = getAllCategories();
 
 $AllArticlesFr = DerniersArticlesLimitFr(); 
@@ -15,7 +13,7 @@ $categorie_nom = isset($categories[$categorie_id]['nom_categorie']) ? $categorie
 
 
 <!doctype html>
-<html lang="<?php echo $lang; ?>"">
+<html lang="fr">
 <head>
     <title>Les partisans de pensée - Actualités</title>
     <meta charset="utf-8" />

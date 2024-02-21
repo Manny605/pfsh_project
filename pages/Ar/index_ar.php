@@ -116,7 +116,7 @@ if ($latestArticleAr !== null) {
 
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <?php if ($latestArticleAr !== null) : ?>
                                 <a href="" class="gallery-link">
                                     <img src="../admin/articles/<?php echo $latestArticleAr['image']; ?>" alt="" class="img-responsive push-bit img-thumbnail" style="max-width: 100%; height: auto;" />
@@ -131,8 +131,8 @@ if ($latestArticleAr !== null) {
                                     </h4>
                                 </div>
                                 <hr />
-                                <p>
-                                    <?php echo $latestArticleAr['contenu']; ?>
+                                <p class="text-end">
+                                    <?php echo nl2br($latestArticleAr['contenu']); ?>
                                 </p>
                                 <hr />
                             <?php else : ?>

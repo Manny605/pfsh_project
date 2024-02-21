@@ -120,6 +120,8 @@ $categories = getAllCategories();
                         <tr>
                             <th></th>
                             <th>Categorie</th>
+                            <th></th>
+                            <th></th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -129,6 +131,8 @@ $categories = getAllCategories();
                             <tr>
                                 <td><?php echo $increment; ?></td>
                                 <td><?php echo $categorie['nom_categorie']; ?></td>
+                                <td><?php echo $categorie['nom_categorie_ar']; ?></td>
+                                <td><?php echo $categorie['nom_categorie_ang']; ?></td>
                                 <td class="row">                                    
                                     <a href="" data-toggle="modal" data-target="#editModal<?php echo $categorie['id_categorie']; ?>"><i class="px-4 fas fa-edit text-success"></i></a>
                                     <a href="" data-toggle="modal" data-target="#deleteModal<?php echo $categorie['id_categorie']; ?>"><i class="fas fa-trash text-danger"></i></a>
@@ -181,8 +185,16 @@ $categories = getAllCategories();
                         <!-- Formulaire pour ajouter une catégorie -->
                         <form action="ajout_categorie.php" method="post">
                             <div class="form-group">
-                                <label for="nom_categorie">Nom de la catégorie</label>
-                                <input type="text" class="form-control" id="nom_categorie" name="nom_categorie" required>
+                                <label for="nom_categorie">Nom de la catégorie en francais</label>
+                                <input type="text" class="form-control" id="nom_categorie" name="nom_categorie_fr" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nom_categorie">Nom de la catégorie en arabe</label>
+                                <input type="text" class="form-control" id="nom_categorie_ar" name="nom_categorie_ar" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nom_categorie">Nom de la catégorie en anglais</label>
+                                <input type="text" class="form-control" id="nom_categorie_ang" name="nom_categorie_ang" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Ajouter</button>
                         </form>
@@ -206,8 +218,16 @@ $categories = getAllCategories();
                             <form action="modifier_categorie.php" method="post">
                                 <input type="hidden" name="id_categorie" value="<?php echo $categorie['id_categorie']; ?>">
                                 <div class="form-group">
-                                    <label for="nom_categorie">Nom de la catégorie</label>
+                                    <label for="nom_categorie">Nom de la catégorie en francais</label>
                                     <input type="text" class="form-control" id="nom_categorie" name="nom_categorie" value="<?php echo $categorie['nom_categorie']; ?>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nom_categorie">Nom de la catégorie en arabe</label>
+                                    <input type="text" class="form-control" id="nom_categorie" name="nom_categorie_ar" value="<?php echo $categorie['nom_categorie_ar']; ?>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nom_categorie">Nom de la catégorie en anglais</label>
+                                    <input type="text" class="form-control" id="nom_categorie" name="nom_categorie_ang" value="<?php echo $categorie['nom_categorie_ang']; ?>" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Enregistrer</button>
                             </form>

@@ -15,12 +15,14 @@ include '../../../const/functions.php';
 // Vérifie si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vérifie si toutes les données requises sont présentes
-    if (isset($_POST["nom_categorie"])) {
+    if (isset($_POST["nom_categorie"], $_POST['nom_categorie_ar'], $_POST['nom_categorie_ang'])) {
         // Récupère les données du formulaire
         $nom_categorie = $_POST["nom_categorie"];
+        $nom_categorie_ar = $_POST["nom_categorie_ar"];
+        $nom_categorie_ang = $_POST["nom_categorie_ang"];
         
         // Insérer l'article dans la base de données en utilisant la fonction insertArticle
-        insertCategorie($nom_categorie);
+        insertCategorie($nom_categorie, $nom_categorie_ar, $nom_categorie_ang);
         
         // Redirigez l'utilisateur vers une page de confirmation ou une autre page appropriée
         header("Location: categories.php?success_ajout=ok");

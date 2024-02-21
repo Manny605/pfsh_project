@@ -19,7 +19,7 @@ if(isset($_GET['categorie_id'])) {
         $recentArticle = getMostRecentArticleInCategoryFr($categorie_id);
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
     <title>Articles <?php echo $categorie_nom ?></title>
     <meta charset="utf-8" />

@@ -27,7 +27,7 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
     <title>Tous les articles</title>
     <!-- Required meta tags -->

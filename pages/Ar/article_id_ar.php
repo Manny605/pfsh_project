@@ -14,7 +14,7 @@ if(isset($_GET['id'])) {
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="ar">
 <head>
     <title><?php echo $titre ?></title>
     <meta charset="utf-8" />
@@ -326,11 +326,11 @@ if(isset($_GET['id'])) {
                             </div>
                             <h3><?php echo $Article_by_id['titre']; ?></h3>
                             <div class="my-4"></div>
-                            <p><?php echo $Article_by_id['contenu']; ?></p>
+                            <p class="text-end"><?php echo nl2br($Article_by_id['contenu']); ?></p>
                             <hr>
                             <div class="row">
                                 <p class="display-5 text-danger"><?php echo $Article_by_id['date_publication'] ?></p>
-                                <p class="display-5">Auteur : <?php echo $Article_by_id['nom_auteur'] ?></p>
+                                <p class="display-5"><?php echo $Article_by_id['nom_auteur'] ?> : المؤلف</p>
                             </div>
                         </div>                        
                     </div>
@@ -366,8 +366,8 @@ if(isset($_GET['id'])) {
                                                         <img src="../admin/articles/<?php echo $article['image']; ?>" alt="">
                                                     </div>
                                                 </a>
-                                                <p class="m-b-0"><a href="article_id_ar.php?id=<?php echo $article['id']; ?>" class="text-decoration-none text-secondary"><?php echo $article['titre']; ?></a></p>
-                                                <span><?php echo $article['date_publication']; ?></span>
+                                                <p class="m-b-0"><a href="article_id_ar.php?id=<?php echo $article['id']; ?>" class="text-decoration-none text-secondary text-end"><?php echo $article['titre']; ?></a></p>
+                                                <span class="text-end"><?php echo $article['date_publication']; ?></span>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>

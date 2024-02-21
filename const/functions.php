@@ -946,17 +946,17 @@ function insertArticle($titre, $categorie_id, $user_id,$contenu, $image, $langue
     $connect->close();
 }
 
-function insertCategorie($nom_categorie) {
+function insertCategorie($nom_categorie,$nom_categorie_ar,$nom_categorie_ang) {
     $connect = connect();
 
     // Préparez la requête SQL pour insérer un nouvel article
-    $sql = "INSERT INTO categories (nom_categorie) VALUES (?)";
+    $sql = "INSERT INTO categories (nom_categorie,nom_categorie_ar,nom_categorie_ang) VALUES (?,?,?)";
 
     // Préparez la déclaration SQL
     $stmt = $connect->prepare($sql);
 
     // Liaison des paramètres
-    $stmt->bind_param("s", $nom_categorie);
+    $stmt->bind_param("sss", $nom_categorie,$nom_categorie_ar,$nom_categorie_ang);
 
     // Exécutez la déclaration
     $stmt->execute();

@@ -18,7 +18,7 @@ if(isset($_GET['id']) && isset($_GET['categorie_id'])) {
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="ar">
 <head>
     <title><?php echo $titre ?></title>
     <meta charset="utf-8" />
