@@ -2,8 +2,9 @@
 session_start();
 
 // Vérification des données du formulaire
-if(isset($_POST['id'], $_POST['titre'], $_POST['contenu'], $_POST['categorie_id'])) {
+if(isset($_POST['id'], $_POST['langue'], $_POST['titre'], $_POST['contenu'], $_POST['categorie_id'])) {
     $id = $_POST['id'];
+    $langue = $_POST['langue'];
     $titre = $_POST['titre'];
     $contenu = $_POST['contenu'];
     $categorie_id = $_POST['categorie_id'];
@@ -26,9 +27,9 @@ if(isset($_POST['id'], $_POST['titre'], $_POST['contenu'], $_POST['categorie_id'
     $connect = connect();
 
     // Requête SQL sécurisée pour mettre à jour l'article
-    $sql = "UPDATE articles SET titre = ?, contenu = ?, categorie_id = ?, image = ? WHERE id = ?";
+    $sql = "UPDATE articles SET code_lang = ?, titre = ?, contenu = ?, categorie_id = ?, image = ? WHERE id = ?";
     $stmt = $connect->prepare($sql);
-    $stmt->bind_param("ssisi", $titre, $contenu, $categorie_id, $image, $id);
+    $stmt->bind_param("sssisi", $langue,$titre, $contenu, $categorie_id, $image, $id);
     $stmt->execute();
 
     if($stmt->affected_rows > 0) {

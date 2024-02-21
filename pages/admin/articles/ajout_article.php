@@ -1,12 +1,13 @@
 <?php
 session_start();
-$id_user = $_SESSION['user_id'];
+$id_user = $_SESSION['id_user'];
 // Inclure le fichier de fonctions
 include_once '../../../const/functions.php';
 
 // Vérifier si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupérer les valeurs du formulaire
+
+    $lang = $_POST['langue'];
     $titre = $_POST['titre'];
     $categorie_id = $_POST['categorie_id'];
     $id_user = $_POST['id_user'];
@@ -28,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     // Appeler la fonction insertArticle pour insérer l'article dans la base de données
-    insertArticle($titre, $categorie_id, $id_user, $contenu, $image_destination);
+    insertArticle($titre, $categorie_id, $id_user, $contenu, $image_destination, $lang);
     
     // Rediriger l'utilisateur vers une page de succès ou d'accueil
     header("Location: articles.php?success_ajout=ok");

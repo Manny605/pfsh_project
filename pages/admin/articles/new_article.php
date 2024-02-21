@@ -12,6 +12,7 @@ $id_user = $_SESSION['id_user'];
 include '../../../const/functions.php';
 
 $categories = getAllCategories();
+$langs = getAllLanguages();
 
 ?>
 
@@ -69,6 +70,15 @@ $categories = getAllCategories();
             <div class="col-md-12">
                 <h2 class="mb-4">Écrire un nouvel article</h2>
                 <form action="ajout_article.php" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="langue">Langue :</label>
+                        <select class="form-control" id="langue" name="langue" required>
+                            <option value="">Sélectionnez la langue de l'article</option>
+                            <?php foreach ($langs as $lang): ?>
+                                <option value="<?php echo $lang['code_lang']; ?>"><?php echo $lang['nom_lang']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label for="titre">Titre :</label>
                         <input type="text" class="form-control" id="titre" name="titre" required>

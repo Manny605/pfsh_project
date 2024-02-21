@@ -1,6 +1,6 @@
 <?php
 
-require_once "../const/functions.php";
+require_once "../../const/functions.php";
 
 // Nombre d'articles par page
 $articlesPerPage = 9;
@@ -17,7 +17,7 @@ if(isset($_GET['q'])){
     $txtSearch = $_GET['q'];
     $AllArticles = rechercheArticle($txtSearch);
 } else {
-    $AllArticles = getAllArticlesLimit($startFrom, $articlesPerPage);
+    $AllArticles = getAllArticlesLimitAr($startFrom, $articlesPerPage);
 }
 
 // Récupérer le nombre total d'articles
@@ -87,7 +87,7 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
 
 <body>
 <header>
-    <?php include '../components/navbar.php' ?>
+    <?php include '../../components/navbar_ar.php' ?>
 </header>
 <!-- Main Content -->
 <div class="container mt-5">
@@ -97,9 +97,7 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
         <div class="container">
             <div class="row justify-content-md-center">
                 <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
-                    <h2 class="mb-4 display-5 text-center">Tous les articles</h2>
-                    <p class="text-secondary mb-5 text-center lead fs-4">Stay tuned and updated by the latest updates
-                        from our blog.</p>
+                    <h2 class="mb-4 display-5 text-center text-danger">جميع المقالات</h2>
                     <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle">
                 </div>
             </div>
@@ -112,9 +110,9 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
                         <div class="col-12 col-lg-4 mt-3">
                             <article>
                                 <figure class="rounded overflow-hidden mb-3 bsb-overlay-hover">
-                                    <a href='article_id.php?id=<?php echo $article['id']; ?>'>
+                                    <a href='article_id_ar.php?id=<?php echo $article['id']; ?>'>
                                         <img class="img-fluid bsb-scale bsb-hover-scale-up" loading="lazy"
-                                             src="./admin/articles/<?php echo $article['image']; ?>" alt="">
+                                             src="../admin/articles/<?php echo $article['image']; ?>" alt="">
                                     </a>
                                     <figcaption>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
@@ -131,8 +129,8 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
                                 <div class="entry-header mb-3">
                                     <ul class="entry-meta list-unstyled d-flex mb-2">
                                         <li>
-                                            <a class="link-primary text-decoration-none"
-                                               href="articles_par_categorie.php?categorie_id=<?php echo $article['categorie_id']; ?>"><?php echo $article['nom_categorie']; ?></a>
+                                            <a class="link-danger text-decoration-none"
+                                               href="articles_par_categorie_ar.php?categorie_id=<?php echo $article['categorie_id']; ?>"><?php echo $article['nom_categorie']; ?></a>
                                         </li>
                                     </ul>
                                     <h2 class="entry-title h4 mb-0">

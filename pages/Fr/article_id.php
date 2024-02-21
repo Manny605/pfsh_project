@@ -1,8 +1,8 @@
 <?php
-require_once "../const/functions.php";
+require_once "../../const/functions.php";
 
 $categories = getAllCategories();
-$AllArticles = DerniersArticlesLimit();
+$AllArticlesFr = DerniersArticlesLimitFr();
 
 if(isset($_GET['id'])) {
 
@@ -19,8 +19,6 @@ if(isset($_GET['id'])) {
     <title><?php echo $titre ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-
-    <!-- Utilisation de Bootstrap CSS personnalisé pour éviter les couleurs jaune et vert -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -309,69 +307,84 @@ if(isset($_GET['id'])) {
 
 <body>
     
-<div>
-        <?php include '../components/navbar.php' ?>
+    <div>
+        <?php include '../../components/navbar.php' ?>
     </div>
 
 
 
     <main>
-    <div id="main-content" class="blog-page">
-        <div class="container">
-            <div class="row clearfix">
+        <div id="main-content" class="blog-page">
+            <div class="container">
+                <div class="row clearfix">
 
                 <div class="col-lg-8 col-md-12 left-box">
                     <div class="card single_post">
                         <div class="body">
                             <div class="img-post">
-                                <img class="d-block img-fluid" src="./admin/articles/<?php echo $Article_by_id['image']; ?>" alt="First slide">
+                                <img class="d-block img-fluid" src="../admin/articles/<?php echo $Article_by_id['image']; ?>" alt="First slide">
                             </div>
                             <h3><?php echo $Article_by_id['titre']; ?></h3>
+                            <div class="my-4"></div>
                             <p><?php echo $Article_by_id['contenu']; ?></p>
+                            <hr>
+                            <div class="row">
+                                <p class="display-5 text-danger"><?php echo $Article_by_id['date_publication'] ?></p>
+                                <p class="display-5">Auteur : <?php echo $Article_by_id['nom_auteur'] ?></p>
+                            </div>
                         </div>                        
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-12 right-box">
-                    <div class="card">
-                        <div class="header">
-                            <h2>Categories</h2>
-                        </div>
-                        <div class="body widget">
-                            <ul class="list-unstyled categories-clouds m-b-0">
-                                <?php foreach ($categories as $categorie) : ?>
-                                    <li><a href="articles_par_categorie.php?categorie_id=<?php echo $categorie['id_categorie']; ?>" class="dropdown-item">Articles <?php echo $categorie['nom_categorie']; ?></a></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="header">
-                            <h2>Derniers Articles</h2>
-                        </div>
-                        <div class="body widget popular-post">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <?php foreach($AllArticles as $article) : ?>
-                                        <div class="single_post mb-4">
-                                            <a href="article_id.php?id=<?php echo $article['id']; ?>">
-                                                <div class="img-post">
-                                                    <img src="./admin/articles/<?php echo $article['image']; ?>" alt="">
-                                                </div>
-                                            </a>
-                                            <p class="m-b-0"><a href="article_id.php?id=<?php echo $article['id']; ?>" class="text-decoration-none text-secondary"><?php echo $article['titre']; ?></a></p>
-                                            <span><?php echo $article['date_publication']; ?></span>
-                                        </div>
+
+                    <div class="col-lg-4 col-md-12 right-box">
+
+                        <div class="card">
+                            <div class="header">
+                                <h2>Categories</h2>
+                            </div>
+                            <div class="body widget">
+                                <ul class="list-unstyled categories-clouds m-b-0">
+                                    <?php foreach ($categories as $categorie) : ?>
+                                        <li><a href="articles_par_categorie.php?categorie_id=<?php echo $categorie['id_categorie']; ?>" class="dropdown-item text-danger">Articles <?php echo $categorie['nom_categorie']; ?></a></li>
                                     <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="header">
+                                <h2>Derniers Articles</h2>
+                            </div>
+                            <div class="body widget popular-post">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <?php foreach($AllArticlesFr as $articleFr) : ?>
+                                            <div class="single_post mb-4">
+                                                <a href="article_id.php?id=<?php echo $articleFr['id']; ?>">
+                                                    <div class="img-post">
+                                                        <img src="../admin/articles/<?php echo $articleFr['image']; ?>" alt="">
+                                                    </div>
+                                                </a>
+                                                <p class="m-b-0"><a href="article_id.php?id=<?php echo $articleFr['id']; ?>" class="text-decoration-none text-secondary"><?php echo $articleFr['titre']; ?></a></p>
+                                                <span><?php echo $articleFr['date_publication']; ?></span>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
+
+    <?php include '../../components/footer.php'; ?>
+
+
     <!-- Utilisation des scripts Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>

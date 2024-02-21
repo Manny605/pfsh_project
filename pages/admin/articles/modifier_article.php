@@ -16,6 +16,7 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
     $article_by_id = getArticleById($article_id);
 }
 $categories = getAllCategories();
+$langs = getAllLanguages();
 ?>
 
 <!DOCTYPE html>
@@ -74,6 +75,14 @@ $categories = getAllCategories();
 
             <form action="traiter_modification_article.php" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
+                    <label for="langue">Langue :</label>
+                    <select class="form-control" id="langue" name="langue" required>
+                        <?php foreach ($langs as $lang): ?>
+                            <option value="<?php echo $lang['code_lang']; ?>" <?php if($lang['code_lang'] == $article_by_id['code_lang']) echo "selected"; ?>><?php echo $lang['nom_lang']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="titre">Titre :</label>
                     <input type="text" class="form-control" id="titre" name="titre" value="<?php echo htmlspecialchars($article_by_id['titre']); ?>">
                 </div>
@@ -98,7 +107,7 @@ $categories = getAllCategories();
                 </div>
                 <div class="form-group">
                     <label for="image">Image :</label>
-                    <input type="file" class="form-control-file" id="image" name="image">
+                    <input type="file" class="form-control-file" id="image" value="<?php echo $article_by_id['image'] ;?>" name="image">
                 </div>
                 <button type="submit" class="btn btn-primary">Enregistrer</button>
             </form>

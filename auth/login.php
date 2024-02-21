@@ -2,6 +2,12 @@
 // Démarrer la session
 session_start();
 
+if (isset($_SESSION['id_user'])) {
+    // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    header("Location: ../pages/admin/index.php");
+    exit();
+}
+
 // Inclure le fichier contenant les fonctions de base de données
 include '../const/functions.php';
 
@@ -85,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <input type="password" class="form-control" id="password" name="mot_de_passe">
                             </div>
                             <!-- Appelle la fonction JavaScript lors du clic sur le bouton -->
-                            <button type="button" class="btn btn-success btn-block" onclick="submitForm()">Se connecter</button>
+                            <button type="button" class="btn btn-success btn-block mt-4" onclick="submitForm()">Se connecter</button>
                         </form>
                     </div>
                 </div>

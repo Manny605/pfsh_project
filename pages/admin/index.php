@@ -55,7 +55,7 @@ $total_auteurs = totalAuteurs();
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="../index.php">Tableau de bord</a>
+                    <a class="nav-link" href="index.php">Tableau de bord</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="articles/articles.php">Articles</a>

@@ -1,27 +1,26 @@
 <?php
-require_once "../const/functions.php";
+require_once "../../const/functions.php";
 
 $categories = getAllCategories();
 
-// Vérifier si l'ID de catégorie est passé dans l'URL
-if(isset($_GET['categorie_id'])) {
-    // Récupérer l'ID de catégorie depuis l'URL
+if(isset($_GET['id']) && isset($_GET['categorie_id'])) {
+
+    $article_id = $_GET['id'];
+    $articleQ = getArticleById($article_id);
+
     $categorie_id = $_GET['categorie_id'];
+    $articles_categorie = getArticlesByCategoriefr($categorie_id);
     
-    // Récupérer les articles de cette catégorie
-    $articles_categorie = getArticlesByCategorie($categorie_id);
-    
-    // Vérifier si des articles ont été trouvés pour cette catégorie
-    if($articles_categorie) {
-        // Récupérer le nom de la catégorie si des articles sont trouvés
+    if($articleQ) {
+        $titre = $articleQ['titre'];
         $categorie_nom = isset($articles_categorie[0]['nom_categorie']) ? $articles_categorie[0]['nom_categorie'] : "";
-        // Récupérer le dernier article publié de cette catégorie
-        $recentArticle = getMostRecentArticleInCategory($categorie_id);
+    }
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Articles <?php echo $categorie_nom ?></title>
+    <title><?php echo $titre ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
@@ -30,6 +29,7 @@ if(isset($_GET['categorie_id'])) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <style>
+        /* Personnalisation des couleurs */
         body {
             background-color: #f8f9fa; /* Couleur de fond gris clair */
             color: #343a40; /* Couleur de texte foncée */
@@ -47,6 +47,10 @@ if(isset($_GET['categorie_id'])) {
             color: #ffffff; /* Couleur de texte claire */
             padding: 20px;
         }
+        .sidebar {
+            background-color: #f0f0f0; /* Couleur de fond de la barre latérale */
+            padding: 20px;
+        }
         @media (max-width: 992px) {
             .navbar-custom-young {
                 flex-direction: row !important;
@@ -58,35 +62,75 @@ if(isset($_GET['categorie_id'])) {
 <body>
     
     <div>
-        <?php include '../components/navbar.php' ?>
+        <?php include '../../components/navbar.php' ?>
     </div>
 
     <main>
         <div class="container-fluid mt-5">
             <div class="row">
 
-                <div class="container">
+                <div class="container mt-5">
                     <div class="row justify-content-md-center">
                         <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
-                            <h2 class="mb-4 display-5 text-center">Les Derniers Articles <?php echo $categorie_nom; ?></h2>
+                            <h2 class="mb-4 display-5 text-center text-danger">Article</h2>
                             <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle">
                         </div>
                     </div>
                 </div>
 
+                <div class="container">
+                    <div class="d-flex flex-column">
+                        <div class="col-md-12">
+                            <a href="" class="gallery-link">
+                                <img src="../admin/articles/<?php echo $articleQ['image']; ?>" alt="" class="w-100 img-responsive push-bit img-thumbnail" style="max-height: 400px;" />
+                            </a>
+                        </div>
+
+                        <div class="my-3"></div>
+
+                        <div class="col-md-12">
+                            <div class="clearfix">
+                                <div class="pull-right">
+                                    <h2 class="text-uppercase"><strong><?php echo $articleQ['titre']; ?></strong></h2>
+                                </div>
+
+                                <div class="my-4"></div>
+
+                                <h4>
+                                    <strong class="text-danger"><?php echo $articleQ['date_publication']; ?></strong><br />
+                                    <small>Auteur : <?php echo isset($articleQ['nom_auteur']) ? $articleQ['nom_auteur'] : "Auteur inconnu"; ?></small>
+                                </h4>
+                            </div>
+                            <hr />
+                            <p>
+                                <?php echo $articleQ['contenu']; ?>
+                            </p>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container mt-5">
+                    <div class="row justify-content-md-center">
+                        <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
+                            <h2 class="mb-4 display-5 text-center text-danger">Les Articles <?php echo $categorie_nom; ?></h2>
+                            <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle">
+                        </div>
+                    </div>
+                </div>
+
+
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
-                        <?php 
-                        foreach ($articles_categorie as $key => $article) { ?>
+                        <?php foreach ($articles_categorie as $key => $article) { ?>
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="<?php echo $key; ?>" <?php if ($key === 0) echo 'class="active"'; ?> aria-current="true" aria-label="Slide <?php echo $key; ?>"></button>
                         <?php } ?>
                     </div>
                     <div class="carousel-inner">
-                        <?php 
-                        foreach ($articles_categorie as $key => $article) { ?>
+                        <?php foreach ($articles_categorie as $key => $article) { ?>
                             <div class="carousel-item <?php if ($key === 0) echo 'active'; ?>">
                                 <a href="articles_par_id.php?id=<?php echo $article['id']; ?>&categorie_id=<?php echo $article['categorie_id']; ?>">
-                                    <img src="./admin/articles/<?php echo $article['image']; ?>" class="d-block w-100 img-fluid" alt="...">
+                                    <img src="../admin/articles/<?php echo $article['image']; ?>" class="d-block w-100 img-fluid" alt="..." style="max-height: 400px;">
                                     <div class="carousel-caption d-none d-md-block">
                                         <h5><?php echo $article['titre']; ?></h5>
                                     </div>
@@ -104,45 +148,44 @@ if(isset($_GET['categorie_id'])) {
                     </button>
                 </div>
 
-                <div class="container mt-5">
+                <div class="container mt-4">
                     <div class="row justify-content-md-center">
                         <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
-                            <h2 class="mb-4 display-5 text-center">Dernier Article <?php echo $categorie_nom; ?></h2>
-                            <p class="text-secondary mb-5 text-center lead fs-4">Restez à l'écoute et informé des dernières mises à jour.</p>
+                            <h2 class="mb-4 display-5 text-center text-danger">Categories</h2>
                             <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle">
                         </div>
                     </div>
                 </div>
 
-                <div class="container-fluid">
+                <div class="container mt-5">
                     <div class="row">
-                        <div class="col-md-6">
-                            <a href="" class="gallery-link">
-                                <img src="./admin/articles/<?php echo $recentArticle['image']; ?>" alt="" class="img-responsive push-bit img-thumbnail" style="max-width: 100%; height: auto;" />
-                            </a>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="clearfix">
-                                <div class="pull-right">
-                                    <h2 class="text-uppercase"><strong><?php echo $recentArticle['titre']; ?></strong></h2>
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-danger text-white">
+                                    Catégories
                                 </div>
-                                <h4>
-                                    <strong class="text-success"><?php echo $recentArticle['date_publication']; ?></strong><br />
-                                    <small><?php echo isset($recentArticle['nom_auteur']) ? $recentArticle['nom_auteur'] : "Auteur inconnu"; ?></small>
-                                </h4>
+                                <div class="card-body">
+                                    <div class="row">
+                                            <div class="flex">
+                                                <?php foreach($categories as $categorie){ ?>
+                                                    <a href='articles_par_categorie.php?categorie_id=<?php echo $categorie['id_categorie']; ?>' class="btn btn-outline-danger btn-block">Articles <?php echo $categorie['nom_categorie'] ?></a>
+                                                <?php } ?>
+                                            </div>
+                                    </div>
+                                </div>
                             </div>
-                            <hr />
-                            <p>
-                                <?php echo $recentArticle['contenu']; ?>
-                            </p>
-                            <hr />
                         </div>
                     </div>
                 </div>
 
+
+
             </div>
         </div>
     </main>
+
+    <?php include '../../components/footer.php'; ?>
+
 
     <!-- Utilisation des scripts Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -151,14 +194,11 @@ if(isset($_GET['categorie_id'])) {
 </html>
 <?php
     } else {
-        header('location: 404Error.php');
-?>
-
-<?php
+        // Si aucun article n'est trouvé pour cet ID
+        echo "";
     }
-} else {
-    header('location: 404Error.php');
-?>
-<?php
+{
+    // Si l'ID de l'article n'est pas spécifié dans l'URL
+    echo "";
 }
 ?>

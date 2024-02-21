@@ -1,3 +1,6 @@
-<footer>
-        <p>&copy; 2024 Mon site d'articles</p>
-    </footer>
+<footer class="bg-light-subtle">
+        <p class="text-black">&copy; 2024 Les partisans de pensée</p>
+</footer>
+
+
+

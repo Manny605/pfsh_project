@@ -70,7 +70,7 @@
                                 <h2 class="mb-4 text-white">Une erreur s'est produite...!</h2>
                                 <p class="w-sm-80 mx-auto mb-4 text-white">Cette page est inaccessible à cause du support. Nous reviendrons très bientôt, très reconnaissants de votre compréhension</p>
                                 <div>
-                                    <a href="index.php" class="btn btn-info btn-lg me-sm-2 mb-2 mb-sm-0">Retourner a l'acceuil</a>
+                                    <a href="./Fr/index.php" class="btn btn-info btn-lg me-sm-2 mb-2 mb-sm-0">Retourner a l'acceuil</a>
                                 </div>
                             </div>
                         </div>
