@@ -3,14 +3,16 @@
 session_start();
 
 if (!isset($_SESSION['id_user'])) {
-    // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
     header("Location: ../../index.php");
     exit();
 }
 
+$id_user = $_SESSION['id_user'];
+
 include '../../../const/functions.php';
 
 $articles = getAllArticles();
+$articlesByAuthor = getAllArticlesByAuthor($id_user);
 
 ?>
 
@@ -121,37 +123,75 @@ $articles = getAllArticles();
                     }
                 ?>
 
-                <!-- Main Content -->
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th class="mobile-only"></th>
-                            <th>Titre</th>
-                            <th>Date de publication</th>
-                            <th>Auteur</th>
-                            <th class="mobile-only">Categorie</th>
-                            <th class="mobile-only">Image</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $increment = 1; ?>
-                        <?php foreach ($articles as $article): ?>
-                            <tr>
-                                <td class="mobile-only"><?php echo $increment; ?></td>
-                                <td><?php echo substr($article['titre'], 0, 90); ?>...</td>
-                                <td><?php echo date('Y-m-d H:i', strtotime($article['date_publication'])); ?></td>
-                                <td><?php echo $article['nom_auteur']; ?></td>
-                                <td class="mobile-only"><?php echo $article['nom_categorie']; ?></td>
-                                <td class="mobile-only"><?php echo substr($article['image'], 0, 20); ?>...</td>
-                                <td class="row">
-                                    <a href="" data-toggle="modal" data-target="#deleteModal<?php echo $article['id']; ?>"><i class="fas fa-trash text-danger"></i></a>
-                                    <a href="modifier_article.php?id=<?php echo $article['id']; ?>"><i class="px-4 fas fa-edit text-success"></i></a>                                </td>
-                            </tr>
-                            <?php $increment++; ?>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+<?php if ($_SESSION['role'] == 'admin'): ?>
+    <!-- Tableau pour l'administrateur -->
+    <table class="table table-hover">
+        <!-- En-tête du tableau pour l'administrateur -->
+        <thead>
+            <tr>
+                <th class="mobile-only">#</th>
+                <th>Titre</th>
+                <th>Date de publication</th>
+                <th>Auteur</th>
+                <th class="mobile-only">Catégorie</th>
+                <th class="mobile-only">Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <!-- Corps du tableau pour l'administrateur -->
+        <tbody>
+            <?php $increment = 1; ?>
+            <?php foreach ($articles as $article): ?>
+                <tr>
+                    <td class="mobile-only"><?php echo $increment; ?></td>
+                    <td><?php echo substr($article['titre'], 0, 90); ?>...</td>
+                    <td><?php echo date('Y-m-d H:i', strtotime($article['date_publication'])); ?></td>
+                    <td><?php echo $article['nom_auteur']; ?></td>
+                    <td class="mobile-only"><?php echo $article['nom_categorie']; ?></td>
+                    <td class="mobile-only"><?php echo substr($article['image'], 0, 20); ?>...</td>
+                    <td class="row">
+                        <a href="" data-toggle="modal" data-target="#deleteModal<?php echo $article['id']; ?>"><i class="fas fa-trash text-danger"></i></a>
+                        <a href="modifier_article.php?id=<?php echo $article['id']; ?>"><i class="px-4 fas fa-edit text-success"></i></a>
+                    </td>
+                </tr>
+                <?php $increment++; ?>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php elseif ($_SESSION['role'] == 'auteur'): ?>
+    <!-- Tableau pour l'auteur -->
+    <table class="table table-hover">
+        <!-- En-tête du tableau pour l'auteur -->
+        <thead>
+            <tr>
+                <th class="mobile-only">#</th>
+                <th>Titre</th>
+                <th>Date de publication</th>
+                <th class="mobile-only">Catégorie</th>
+                <th class="mobile-only">Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <!-- Corps du tableau pour l'auteur -->
+        <tbody>
+            <?php $increment = 1; ?>
+            <?php foreach ($articlesByAuthor as $articlesAuthor): ?>
+                <tr>
+                    <td class="mobile-only"><?php echo $increment; ?></td>
+                    <td><?php echo substr($articlesAuthor['titre'], 0, 90); ?>...</td>
+                    <td><?php echo date('Y-m-d H:i', strtotime($articlesAuthor['date_publication'])); ?></td>
+                    <td class="mobile-only"><?php echo $articlesAuthor['nom_categorie']; ?></td>
+                    <td class="mobile-only"><?php echo substr($articlesAuthor['image'], 0, 20); ?>...</td>
+                    <td class="row">
+                        <a href="modifier_article.php?id=<?php echo $articlesAuthor['id']; ?>"><i class="px-4 fas fa-edit text-success"></i></a>
+                    </td>
+                </tr>
+                <?php $increment++; ?>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
+
             </div>
         </div>
     </div>

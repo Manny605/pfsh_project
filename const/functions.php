@@ -91,6 +91,24 @@ function getAllArticles() {
     return $allArticles;
 }
 
+function getAllArticlesByAuthor($id_user) {
+    $connect = connect();
+
+    $sql = "SELECT articles.*, CONCAT(users.prenom, ' ', users.nom) AS nom_auteur, categories.nom_categorie AS nom_categorie
+    FROM articles
+    JOIN users ON articles.user_id = users.id_user
+    JOIN categories ON articles.categorie_id = categories.id_categorie
+    WHERE articles.user_id = $id_user
+    ORDER BY articles.date_publication DESC";
+
+    $result = $connect->query($sql);
+
+    $articlesByAuthor = $result->fetch_all(MYSQLI_ASSOC);
+
+    $connect->close();
+
+    return $articlesByAuthor;
+}
 
 
 
