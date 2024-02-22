@@ -2,7 +2,7 @@
 require_once "../../const/functions.php";
 
 $categories = getAllCategories();
-$AllArticles = DerniersArticlesLimitAr();
+$AllArticles = DerniersArticlesLimitAng();
 
 if(isset($_GET['id'])) {
 
@@ -14,7 +14,7 @@ if(isset($_GET['id'])) {
 ?>
 
 <!doctype html>
-<html lang="ar">
+<html lang="en">
 <head>
     <title><?php echo $titre ?></title>
     <meta charset="utf-8" />
@@ -308,7 +308,7 @@ if(isset($_GET['id'])) {
 <body>
     
     <div>
-        <?php include '../../components/navbar_ar.php' ?>
+        <?php include '../../components/navbar_ang.php' ?>
     </div>
 
 
@@ -330,7 +330,7 @@ if(isset($_GET['id'])) {
                             <hr>
                             <div class="row">
                                 <p class="display-5 text-danger"><?php echo $Article_by_id['date_publication'] ?></p>
-                                <p class="display-5"><?php echo $Article_by_id['nom_auteur'] ?> : المؤلف</p>
+                                <p class="display-5">Author : <?php echo $Article_by_id['nom_auteur'] ?></p>
                             </div>
                         </div>                        
                     </div>
@@ -341,12 +341,12 @@ if(isset($_GET['id'])) {
 
                         <div class="card">
                             <div class="header">
-                                <h2>الفئات</h2>
+                                <h2>The categories</h2>
                             </div>
                             <div class="body widget">
                                 <ul class="list-unstyled categories-clouds m-b-0">
                                     <?php foreach ($categories as $categorie) : ?>
-                                        <li><a href="articles_par_categorie_ar.php?categorie_id=<?php echo $categorie['id_categorie']; ?>" class="dropdown-item text-danger">المقالات <?php echo $categorie['nom_categorie_ar']; ?></a></li>
+                                        <li><a href="articles_par_categorie_ang.php?categorie_id=<?php echo $categorie['id_categorie']; ?>" class="dropdown-item text-danger"><?php echo $categorie['nom_categorie_ang']; ?> Articles</a></li>
                                     <?php endforeach; ?>
                                 </ul>
                             </div>
@@ -354,14 +354,14 @@ if(isset($_GET['id'])) {
 
                         <div class="card">
                             <div class="header">
-                                <h2>مقالات حديثة</h2>
+                                <h2>Recent articles</h2>
                             </div>
                             <div class="body widget popular-post">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <?php foreach($AllArticles as $article) : ?>
                                             <div class="single_post mb-4">
-                                                <a href="article_id_ar.php?id=<?php echo $article['id']; ?>">
+                                                <a href="article_id_ang.php?id=<?php echo $article['id']; ?>">
                                                     <div class="img-post">
                                                         <img src="../admin/articles/<?php echo $article['image']; ?>" alt="">
                                                     </div>
@@ -385,6 +385,7 @@ if(isset($_GET['id'])) {
 
 
     <?php include '../../components/footer.php'; ?>
+
 
 
     

@@ -17,7 +17,7 @@ if(isset($_GET['q'])){
     $txtSearch = $_GET['q'];
     $AllArticles = rechercheArticle($txtSearch);
 } else {
-    $AllArticles = getAllArticlesLimitAr($startFrom, $articlesPerPage);
+    $AllArticles = getAllArticlesLimitAng($startFrom, $articlesPerPage);
 }
 
 // Récupérer le nombre total d'articles
@@ -27,9 +27,9 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
 ?>
 
 <!doctype html>
-<html lang="ar">
+<html lang="en">
 <head>
-    <title>جميع المقالات</title>
+    <title>All articles</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -87,7 +87,7 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
 
 <body>
 <header>
-    <?php include '../../components/navbar_ar.php' ?>
+    <?php include '../../components/navbar_ang.php' ?>
 </header>
 <!-- Main Content -->
 <div class="container mt-5">
@@ -97,7 +97,7 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
         <div class="container">
             <div class="row justify-content-md-center">
                 <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
-                    <h2 class="mb-4 display-5 text-center text-danger">جميع المقالات</h2>
+                    <h2 class="mb-4 display-5 text-center text-danger">All articles</h2>
                     <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle">
                 </div>
             </div>
@@ -110,7 +110,7 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
                         <div class="col-12 col-lg-4 mt-3">
                             <article>
                                 <figure class="rounded overflow-hidden mb-3 bsb-overlay-hover">
-                                    <a href='article_id_ar.php?id=<?php echo $article['id']; ?>'>
+                                    <a href='article_id_ang.php?id=<?php echo $article['id']; ?>'>
                                         <img class="img-fluid bsb-scale bsb-hover-scale-up" loading="lazy"
                                              src="../admin/articles/<?php echo $article['image']; ?>" alt="">
                                     </a>
@@ -123,19 +123,19 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
                                             <path
                                                     d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
                                         </svg>
-                                        <h4 class="h6 text-white bsb-hover-fadeInRight mt-2">قراءة</h4>
+                                        <h4 class="h6 text-white bsb-hover-fadeInRight mt-2">Read</h4>
                                     </figcaption>
                                 </figure>
                                 <div class="entry-header mb-3">
                                     <ul class="entry-meta list-unstyled d-flex mb-2">
                                         <li>
                                             <a class="link-danger text-decoration-none"
-                                               href="articles_par_categorie_ar.php?categorie_id=<?php echo $article['categorie_id']; ?>"><?php echo $article['nom_categorie_ar']; ?></a>
+                                               href="articles_par_categorie_ang.php?categorie_id=<?php echo $article['categorie_id']; ?>"><?php echo $article['nom_categorie_ang']; ?></a>
                                         </li>
                                     </ul>
                                     <h2 class="entry-title h4 mb-0">
                                         <a class="link-dark text-decoration-none"
-                                           href='article_id.php?id=<?php echo $article['id']; ?>'><?php echo $article['titre']; ?></a> <!-- corrected variable name from $firstArticle to $article -->
+                                           href='article_id_ang.php?id=<?php echo $article['id']; ?>'><?php echo $article['titre']; ?></a>
                                     </h2>
                                 </div>
                                 <div class="entry-footer">
@@ -166,7 +166,7 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
                                                     <path
                                                             d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
                                                 </svg>
-                                                <span class="ms-2 fs-7"><?php echo $article['nom_auteur']; ?></span> <!-- corrected variable name from $firstArticle to $article -->
+                                                <span class="ms-2 fs-7"><?php echo $article['nom_auteur']; ?></span>
                                             </div>
                                         </li>
                                     </ul>
@@ -215,6 +215,7 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <!-- Bootstrap JavaScript Libraries -->
 <script
         src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

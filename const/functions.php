@@ -786,7 +786,7 @@ function getAllArticlesLimitFr($startFrom, $articlesPerPage) {
 function getAllArticlesLimitAr($startFrom, $articlesPerPage) {
     $connect = connect();
 
-    $sql = "SELECT articles.*, CONCAT(users.prenom, ' ', users.nom) AS nom_auteur, categories.nom_categorie AS nom_categorie
+    $sql = "SELECT articles.*, CONCAT(users.prenom, ' ', users.nom) AS nom_auteur, categories.nom_categorie_ar AS nom_categorie_ar
     FROM articles
     JOIN users ON articles.user_id = users.id_user
     JOIN categories ON articles.categorie_id = categories.id_categorie
@@ -824,7 +824,7 @@ function getAllArticlesLimitAng($startFrom, $articlesPerPage) {
     $connect = connect();
 
     // Préparation de la requête SQL pour récupérer une portion des articles
-    $sql = "SELECT articles.*, CONCAT(users.prenom, ' ', users.nom) AS nom_auteur, categories.nom_categorie AS nom_categorie
+    $sql = "SELECT articles.*, CONCAT(users.prenom, ' ', users.nom) AS nom_auteur, categories.nom_categorie_ang AS nom_categorie_ang
     FROM articles
     JOIN users ON articles.user_id = users.id_user
     JOIN categories ON articles.categorie_id = categories.id_categorie

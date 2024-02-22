@@ -126,7 +126,7 @@ $users = getAllUsers();
                             <th class="mobile-only"></th>
                             <th>Nom</th>
                             <th class="mobile-only">Nom_utilisateur</th>
-                            <th class="mobile-only">Mot de passe</th>
+                            <th class="mobile-only">Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -137,7 +137,7 @@ $users = getAllUsers();
                                 <td class="mobile-only"><?php echo $increment; ?></td>
                                 <td><?php echo $user['prenom'] . ' ' . $user['nom']; ?></td>
                                 <td class="mobile-only"><?php echo $user['nom_utilisateur']; ?></td>
-                                <td class="mobile-only"><?php echo $user['mot_de_passe']; ?></td>
+                                <td class="mobile-only"><?php echo $user['role']; ?></td>
                                 <td class="row">
                                     <a href="" data-toggle="modal" data-target="#editModal<?php echo $user['id_user']; ?>"><i class="px-4 fas fa-edit text-success"></i></a>
                                     <a href="" data-toggle="modal" data-target="#deleteModal<?php echo $user['id_user']; ?>"><i class="fas fa-trash text-danger"></i></a>
@@ -206,11 +206,19 @@ $users = getAllUsers();
                                 <div class="input-group">
                                     <input type="password" class="form-control" id="mot_de_passe" name="mot_de_passe" required>
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword_add">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="role">Rôle</label>
+                                <select class="form-control" id="role" name="role" required>
+                                    <option value="">Sélectionner un rôle</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="auteur">Auteur</option>
+                                </select>
                             </div>
                             <button type="submit" class="btn btn-primary">Ajouter</button>
                         </form>
@@ -256,6 +264,14 @@ $users = getAllUsers();
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="role">Rôle</label>
+                                    <select class="form-control" id="role" name="role" required>
+                                        <option value="">Sélectionner un rôle</option>
+                                        <option value="admin" <?php echo ($user['role'] == 'admin') ? 'selected' : ''; ?>>Admin</option>
+                                        <option value="auteur" <?php echo ($user['role'] == 'auteur') ? 'selected' : ''; ?>>Auteur</option>
+                                    </select>
+                                </div>
                                 <button type="submit" class="btn btn-primary">Enregistrer</button>
                             </form>
                         </div>
@@ -270,29 +286,35 @@ $users = getAllUsers();
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            var passwordField = document.getElementById('mot_de_passe');
-            var fieldType = passwordField.getAttribute('type');
-            if (fieldType === 'password') {
-                passwordField.setAttribute('type', 'text');
-                this.innerHTML = '<i class="fas fa-eye-slash"></i>';
-            } else {
-                passwordField.setAttribute('type', 'password');
-                this.innerHTML = '<i class="fas fa-eye"></i>';
-            }
-        });
+    document.getElementById('togglePassword_add').addEventListener('click', function() {
+        var passwordField = document.getElementById('mot_de_passe');
+        var fieldType = passwordField.getAttribute('type');
+        if (fieldType === 'password') {
+            passwordField.setAttribute('type', 'text');
+            this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+        } else {
+            passwordField.setAttribute('type', 'password');
+            this.innerHTML = '<i class="fas fa-eye"></i>';
+        }
+    });
 
-        document.getElementById('togglePassword_modif').addEventListener('click', function() {
-            var passwordField = document.getElementById('mot_de_passe_mdp');
-            var fieldType = passwordField.getAttribute('type');
-            if (fieldType === 'password') {
-                passwordField.setAttribute('type', 'text');
-                this.innerHTML = '<i class="fas fa-eye-slash"></i>';
-            } else {
-                passwordField.setAttribute('type', 'password');
-                this.innerHTML = '<i class="fas fa-eye"></i>';
-            }
-        });
-    </script>
+    document.getElementById('togglePassword_modif').addEventListener('click', function() {
+        console.log('Bouton de modification de mot de passe cliqué');
+        var passwordField = document.getElementById('mot_de_passe_mdp');
+        var fieldType = passwordField.getAttribute('type');
+        if (fieldType === 'password') {
+            passwordField.setAttribute('type', 'text');
+            this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+        } else {
+            passwordField.setAttribute('type', 'password');
+            this.innerHTML = '<i class="fas fa-eye"></i>';
+        }
+    });
+</script>
+
+
+
+
+
 </body>
 </html>

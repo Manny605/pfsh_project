@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-body-secondary">
+<nav class="navbar navbar-expand-lg navbar-light bg-danger-subtle">
     <div class="container-fluid navbar-custom-young flex-column">
         <!-- Brand -->
         <div>

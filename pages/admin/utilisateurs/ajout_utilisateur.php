@@ -15,15 +15,16 @@ include '../../../const/functions.php';
 // Vérifie si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vérifie si toutes les données requises sont présentes
-    if (isset($_POST["prenom"]) && isset($_POST["nom"]) && isset($_POST["nom_utilisateur"]) && isset($_POST["mot_de_passe"])) {
+    if (isset($_POST["prenom"]) && isset($_POST["nom"]) && isset($_POST["nom_utilisateur"]) && isset($_POST["mot_de_passe"]) && isset($_POST['role'])) {
         // Récupère les données du formulaire
         $prenom = $_POST["prenom"];
         $nom = $_POST["nom"];
         $nom_utilisateur = $_POST["nom_utilisateur"];
         $mot_de_passe = $_POST["mot_de_passe"];
+        $role = $_POST['role'];
         
         // Insérer l'article dans la base de données en utilisant la fonction insertArticle
-        insertUser($prenom,$nom,$nom_utilisateur,$mot_de_passe);
+        insertUser($prenom,$nom,$nom_utilisateur,$mot_de_passe, $role);
         
         // Redirigez l'utilisateur vers une page de confirmation ou une autre page appropriée
         header("Location: utilisateurs.php?success_ajout=ok");
